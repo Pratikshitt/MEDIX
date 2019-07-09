@@ -1,5 +1,6 @@
 from django.db import models
 from phone_field import PhoneField
+from django.contrib.auth.models import User
 #from django.contrib.auth.models import AbstractUser
 # Create your models here.
 #The normal user model can be used for login of all users with only an added field of 
@@ -10,7 +11,8 @@ from phone_field import PhoneField
 #--------------------------------------------------------------------------------------------
 class Normal_User(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
-    phone_no=PhoneField(verbose_name="Phone Number",null=False,unique=True)     
+    phone_no=PhoneField(verbose_name="Phone Number",null=False,unique=True) 
+    auth_user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)    
     
 #--------------------------------------------------------------------------------------------
 #Vendor Model : Model for Vendors
@@ -22,6 +24,7 @@ class Vendor(models.Model):
     is_verified=models.BooleanField(default=False)#if is verfied then he can start getting requests
     # from users. Otherwise his account is not activated and although he can add products the user
     #cannot view them.
+    auth_user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
   
 #--------------------------------------------------------------------------------------------
 #Medicine Model : Model for information about medicine
@@ -33,8 +36,8 @@ class Medicine(models.Model):
     Medicine_dosage=models.IntegerField(verbose_name="Dosage in Milligram(mg)")
     types=(('Schedule 1','Schedule 1'),('Schedule 2','Schedule 2'),('Schedule 3','Schedule 3'),('Schedule 4','Schedule 4'),('Schedule 5','Schedule 5'))
     Medicine_type=models.CharField(verbose_name='Type of Medicine',choices=types,null=False,max_length=50)
-    pass
-
+    vendor_selling=models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    
 #--------------------------------------------------------------------------------------------
 #Hostipitals and clinics Model : Model for hostpital, clinics or medical practitioners
 #--------------------------------------------------------------------------------------------
@@ -42,15 +45,16 @@ class Medicine(models.Model):
 class Hospital(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
     hospital_name=models.CharField(verbose_name="Hospital Name",max_length=50)
-    
-    pass
+    hospital_document=models.FileField(upload_to="hospital documents",null=True,default=None)
+    phone_no=PhoneField(verbose_name="Phone Number",null=False,unique=True)   
+    auth_user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
 
 #--------------------------------------------------------------------------------------------
 #Notifications Model : Model for handling notifications i.e: Medicine Order From User To A Vendor
 #--------------------------------------------------------------------------------------------
 class User_To_Vendor_Order(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
-    order_details=models.CharField(max_length=100,)
+    order_details=models.CharField(max_length=100,verbose_name="Order Details")
     vendor=models.OneToOneField(Vendor,on_delete=models.SET_NULL,null=True)
     user=models.OneToOneField(Normal_User,on_delete=models.SET_NULL,null=True)
     direction=models.BooleanField(default=True) #whether the notification is from user to vendor or opposite
