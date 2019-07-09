@@ -48,7 +48,7 @@ class Hospital(models.Model):
     hospital_document=models.FileField(upload_to="hospital documents",null=True,default=None)
     phone_no=PhoneField(verbose_name="Phone Number",null=False,unique=True)   
     auth_user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
-
+    is_verified=models.BooleanField(default=False)
 #--------------------------------------------------------------------------------------------
 #Notifications Model : Model for handling notifications i.e: Medicine Order From User To A Vendor
 #--------------------------------------------------------------------------------------------
