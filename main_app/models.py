@@ -21,6 +21,7 @@ class Vendor(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
     vendor_verification_document=models.FileField(verbose_name="Vendor License",upload_to='license_documents')
     phone_no=PhoneField(verbose_name="Phone Number",null=False,unique=True)
+    vendor_name=models.CharField(verbose_name="Vendor Name",max_length=50)
     is_verified=models.BooleanField(default=False)#if is verfied then he can start getting requests
     # from users. Otherwise his account is not activated and although he can add products the user
     #cannot view them.
