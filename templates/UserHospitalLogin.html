@@ -1,0 +1,24 @@
+{% extends "base/basic_layout.html" %}
+{% block page_title %}Login{% endblock page_title %}
+{% block main_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+        <form method="post">
+        {% csrf_token %}
+        {{ user_form }}
+        <input type="hidden" name="form_for_user" value="not important">
+        <input type="submit" value="LOGIN">
+        </form>
+        </div>
+        <div class="col-sm-6">
+        <form method="post">
+        {% csrf_token %}
+        {{ hospital_form }}
+        <input type="hidden" name="form_for_hospital" value="not important">
+        <input type="submit" value="LOGIN">
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}
