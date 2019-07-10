@@ -15,13 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main_app.views import user_login,register_new_user,register_new_hospital,register_new_vendor,user_and_hospital_login
-
+from main_app.views import register_new_user,register_new_hospital,register_new_vendor,user_and_hospital_login,vendor_login,all_logout
+from main_app.views import MedicineSearchView,VendorsView,vendor_add_medicine,vendor_delete_medicine,vendor_update_medicine
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', user_login ),
     path('normal_user_register/', register_new_user),
     path('hospital_register/',register_new_hospital),
     path('vendor_register/',register_new_vendor),
-    path('user_hospital_login/',user_and_hospital_login),
+    path('user_hospital_login/',user_and_hospital_login,name='u_h_login'),
+    path('vendor_login/',vendor_login,name='v_login'),
+    path('search_page/',MedicineSearchView,name="m_search"),
+    path('logout/',all_logout,name='log_out'),
+    path('vendor_page/',VendorsView),
+    path('add_medicine/',vendor_add_medicine),
+    path('remove_medicine/<id>',vendor_delete_medicine),
+    path('update_medicine/<id>',vendor_update_medicine),
 ]

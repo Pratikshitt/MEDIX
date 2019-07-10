@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Hospital,Vendor
+from .models import Hospital,Vendor,Medicine
 # Register your models here.
- 
 # h_iter=[]
 # for h in Hospital.objects.all():
 #     if h.is_verified==False:
@@ -20,3 +19,7 @@ class AdminHospital(admin.ModelAdmin):
 @admin.register(Vendor)
 class AdminVendor(admin.ModelAdmin):
     fields=('vendor_name','vendor_verification_document','is_verified')
+
+@admin.register(Medicine)
+class MedAdmin(admin.ModelAdmin):
+    pass

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from phone_field import PhoneFormField
+from .models import Medicine
 
 class UserRegisterForm(forms.Form):
     First_Name=forms.CharField(label="First Name",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'25','required':'True','autofocus':'True'}))
@@ -43,3 +44,13 @@ class VendorLoginForm(forms.Form):
     VendorName=forms.CharField(label="Vendor Name",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True','autofocus':'True'}))
     Username=forms.CharField(label="Username",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True'}))
     Password=forms.CharField(label="Password",widget=forms.PasswordInput(attrs={'class':'form-control','maxlength':'30','required':'True'}))
+
+class SearchForm(forms.Form):
+    seach_query=forms.CharField(label="Search",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True','autofocus':'True'}))
+
+class AddMedicineForm(forms.ModelForm):
+    class Meta:
+        model=Medicine
+        fields = ('Medicine_price','Medicine_name','Medicine_dosage','Medicine_type','total_quantity')
+        # exclude=['vendor_selling']
+        

@@ -1,0 +1,12 @@
+{% extends "base/basic_layout.html" %}
+{% block page_title %}Inventory{% endblock page_title %}
+{% block main_content %}
+    {% for med in inv %}
+        {{med.MedicineName}} <br>
+        {{med.Medicine_price}} <br>
+        {{med.Medicine_dosage}} <br>
+        {{med.Medicine_type}} <br>
+        {{med.total_quantity}} <br>
+        {{med.vendor_selling.vendor_name}} <br>  
+    {% endfor %}
+{% endblock main_content %}

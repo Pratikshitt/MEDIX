@@ -1,0 +1,12 @@
+{% extends "base/basic_layout.html" %}
+{% block page_title %}Search{% endblock page_title %}
+
+{% block main_content %}
+<form method="POST">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="SEARCH">
+</form>
+{% endblock main_content %}
+
+

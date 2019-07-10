@@ -37,7 +37,8 @@ class Medicine(models.Model):
     Medicine_dosage=models.IntegerField(verbose_name="Dosage in Milligram(mg)")
     types=(('Schedule 1','Schedule 1'),('Schedule 2','Schedule 2'),('Schedule 3','Schedule 3'),('Schedule 4','Schedule 4'),('Schedule 5','Schedule 5'))
     Medicine_type=models.CharField(verbose_name='Type of Medicine',choices=types,null=False,max_length=50)
-    vendor_selling=models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    total_quantity=models.IntegerField(verbose_name="Quantity Of Medicine in Stock")
+    vendor_selling=models.ForeignKey(Vendor,on_delete=models.CASCADE,null=True)
     
 #--------------------------------------------------------------------------------------------
 #Hostipitals and clinics Model : Model for hostpital, clinics or medical practitioners
@@ -74,4 +75,16 @@ class Hospital_To_Vendor_Order(models.Model):
     direction=models.BooleanField(default=True)#whether the notification is from user to vendor or opposite
     #if hospital sends a request then direction is true else it is false
     high_priority=models.BooleanField(default=True)
+
+#--------------------------------------------------------------------------------------------
+#Shopping Cart
+#--------------------------------------------------------------------------------------------
+class Items(models.Model):
+    vendor_name=models.CharField(verbose_name="Vendor Name",max_length=50)
+    medicine_name=models.CharField(verbose_name="Medicine Name",max_length=50)
+    quantity=models.IntegerField(verbose_name="Quantity Of Medicine")
+    
+       
+
+
     
