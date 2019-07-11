@@ -1,0 +1,17 @@
+body
+{
+    font-style: italic;
+    background:url("/static/img/sample.jpg");
+    background-size:cover;
+}
+.container
+{
+    max-width: 400px;
+   
+    margin: auto;
+    
+    
+    padding: 40px;
+    color:#fff;
+    margin-top: 70px;
+}

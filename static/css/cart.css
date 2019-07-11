@@ -1,0 +1,17 @@
+body
+{
+    font-style: italic;
+    background:url("/static/img/sample.jpg");
+    background-size:cover;
+}
+.containe
+{
+    max-width: 750px;
+    /* border-radius: 20px; */
+    margin: auto;
+    background: rgba(0, 0, 0, 0.5);
+    /* box-sizing: border-box; */
+    padding: 40px;
+    text:#ffff;
+    margin-top: 70px;
+}

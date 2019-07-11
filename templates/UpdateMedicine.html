@@ -1,11 +1,16 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Update Inventory{% endblock page_title %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/update_medicine.css' %}">{% endblock %}
+
 {% block main_content %}
-<div class="container">
+<div class="containe">
     <form  method="post">
     {% csrf_token %}
     {{form}}
-    <input type="submit" value="Update">
+    <br>
+    <input class="btn btn-primary" type="submit" value="Update">
     </form>
 </div>
 {% endblock main_content %}

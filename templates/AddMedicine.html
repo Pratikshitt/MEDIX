@@ -1,11 +1,15 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Add Medicine{% endblock page_title %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/add_medicine.css' %}">{% endblock %}
 {% block main_content %}
-<div class="container">
+<center><h1>ADD MEDICINES</h1></center>
+<div class="containe">
     <form method="POST">
     {% csrf_token %}
-    {{form}}
-    <input type="submit" value="ADD">
+    {{form}} <br>
+    <input class="btn btn-success" type="submit" value="ADD">
     </form>
 </div>
 {% endblock main_content %}

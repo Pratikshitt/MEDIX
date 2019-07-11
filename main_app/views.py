@@ -104,7 +104,7 @@ def user_and_hospital_login(request):
                     return HttpResponse("Incorrect Credentials")
                 if user and (user.groups.all())[0].id==1:
                     login(request,user)
-                    return HttpResponse("SUCCESS")
+                    return redirect("m_search")
                 else:
                     return HttpResponse("Incorrect Credentials")
         else:
@@ -121,7 +121,7 @@ def user_and_hospital_login(request):
                     for h in Hospital.objects.all():
                         if h.hospital_name==h_name and h.auth_user==user:
                             login(request,user)
-                            return HttpResponse("SUCCESS")
+                            return redirect("m_search")
                     return HttpResponse("INCORRECT CREDENTIALS")
                 else:
                     return HttpResponse("INCORRECT CREDENTIALS")                    
@@ -146,7 +146,7 @@ def vendor_login(request):
                 for v in Vendor.objects.all():
                     if v.vendor_name==v_name and v.auth_user==user:
                         login(request,user)
-                        return HttpResponse("SUCCESS")
+                        return redirect('/vendor_page')
                 return HttpResponse("INCORRECT CREDENTIALS")
                     #login(request,user) 
             else:
@@ -360,26 +360,44 @@ def orders(request):
                     o_w=order_wrapper(med=((o.order_details).split(','))[0],quan=((o.order_details).split(','))[1],client=o.user.auth_user.username,c_type="normal user",id=o.id)
                     order_list.append(o_w)
     for o in Hospital_To_Vendor_Order.objects.all():
-        if vend.vendor_name==o.vendor:
+        print(o.vendor)
+        if vend.vendor_name==o.vendor.vendor_name:
+            print("HI")
+            print(o.hospital.auth_user.username)
+            print("NO")
             o_w=order_wrapper(med=((o.order_details).split(','))[0],quan=((o.order_details).split(','))[1],client=o.hospital.auth_user.username,c_type="hospital",id=o.id)
             order_list.append(o_w)
     print(order_list)
     if request.method=='POST':
         u_type=request.POST.get('c_type')
         u_name=request.POST.get('client')
-        message="Your order of "
+        message="Your order with order details :-"
         em=(User.objects.get(username=u_name)).email
         if u_type=="normal user":   
             print(request.POST.get('id'))
-            message=(User_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+            mes_val=(User_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+            message+=" Medicine Name: "+(mes_val.split(','))[0] + " Quantity: "+(mes_val.split(','))[1]
             User_To_Vendor_Order.objects.get(id=request.POST.get('id')).delete()
         else:
+            mes_val=(Hospital_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+            message+=" Medicine Name: "+(mes_val.split(','))[0] + " Quantity: "+(mes_val.split(','))[1]
             Hospital_To_Vendor_Order.objects.get(id=request.POST.get('id')).delete()
-            message=(Hospital_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+            
         if 'accept' in request.POST:
-            message+=" is accepted"
+            for med in Medicine.objects.all():
+                if med.vendor_selling!=None:
+                    print((med.Medicine_name.strip()==request.POST.get('med').strip()),(med.vendor_selling.vendor_name==vend.vendor_name))
+                    if (med.Medicine_name).strip()==(request.POST.get('med')).strip() and med.vendor_selling.vendor_name==vend.vendor_name:
+                        print(med.Medicine_name)
+                        print("Here")
+                        med.total_quantity=med.total_quantity-int(request.POST.get('quan'))
+                        med.save()
+                        if med.total_quantity<=0:
+                            med.delete()                    
+                        break
+            message+=" has been accepted"
         else:
-            message+=" is rejected"
+            message+=" has been rejected"
         mail_notif(email=em,message=message)
     return render(request,'Orders.html',{'order':order_list})
     

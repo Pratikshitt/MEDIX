@@ -1,12 +1,16 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Vendors Register{% endblock page_title %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vendor_register.css' %}">{% endblock %}
 {% block main_content %}
 <div class="container">
     <form method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     {{form}}
-    <input type="submit" value="Register">
+    <br><br>
+    <input class="btn btn-primary" type="submit" value="Register">
     </form>
-        {% if error %} {{error}} {%endif%}
+    {% if error %} {{error}} {%endif%}
 </div>
 {% endblock main_content %}

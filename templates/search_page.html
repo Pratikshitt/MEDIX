@@ -1,18 +1,38 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Search{% endblock page_title %}
-{%load static%}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/search_page.css' %}">{% endblock %}
 {% block main_content %}
-<a href="/view_cart" class="btn btn-dark">View Cart</a>
+<center><h1><b>MEDIX</b></h1></center>
+<div class="float-right">
+<a href="/logout" class="btn btn-danger">Logout</a>
+</div>
+<div class="container">
+<a href="/view_cart" class="btn btn-success">View Cart</a><br>
 <form method="POST">
     {% csrf_token %}
-    {{form}}
-    <input type="submit" value="SEARCH">
+    {{form}} 
+    <br>
+    <input type="submit" class="btn btn-primary" value="SEARCH"><br>
 </form>
-
+<br>
 {% if results %}
-<table>
+<table class="table table-dark">
+        <thead>
+                <tr>
+                  <th scope="col">Medicine Name</th>
+                  <th scope="col">Vendor Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Dosage</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">ADD Quantity To Buy</th>
+                </tr>
+              </thead>
+              <tbody>
 
 {% for res in results %}
+
 <tr>
    <td> {{res.Medicine_name}} </td>
     <td>{{res.vendor_selling.vendor_name}}</td>
@@ -23,13 +43,14 @@
     {% csrf_token %}
     <td><input type="number" name="{{res.id}}" min="1" max="{{res.total_quantity}}"></td>
     <input type="hidden" name="cart" value="{{res.id}}">
-    <td><input type="submit" value="Add To Cart"></td>
+    <td><input type="submit" class="btn btn-primary" value="Add To Cart"></td>
     </form>
 </tr>
 {% endfor %}
-
+</tbody>
 </table>
 {% endif %}
+</div>
 {% endblock main_content %}
 
 

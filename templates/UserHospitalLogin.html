@@ -1,24 +1,35 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Login{% endblock page_title %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/user_login.css' %}">{% endblock %}
+
 {% block main_content %}
-<div class="container">
+     <h1><center><b>LOGIN PAGE<b></center></h1>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="left-box">
+            <h2>USER</h2>
         <form method="post">
         {% csrf_token %}
         {{ user_form }}
         <input type="hidden" name="form_for_user" value="not important">
-        <input type="submit" value="LOGIN">
+        <br>
+        <input class="btn btn-primary" type="submit" value="LOGIN">
+        <a href="/normal_user_register" class="btn btn-success">Sign-Up</a>
         </form>
         </div>
-        <div class="col-sm-6">
+        <div class="right-box">
+            <h2>HOSPITAL</h2>
         <form method="post">
         {% csrf_token %}
         {{ hospital_form }}
-        <input type="hidden" name="form_for_hospital" value="not important">
-        <input type="submit" value="LOGIN">
+        <input type="hidden" name="form_for_hospital" value="not important"><br>
+        <input class="btn btn-primary" type="submit" value="LOGIN">
+        <a href="/hospital_register" class="btn btn-success">Register</a>
         </form>
         </div>
     </div>
-</div>
+
+    <center><h4> Are u vendor? </h4> <a href="/vendor_login" class="btn btn-warning">Login Here</a></center>
+
 {% endblock main_content %}

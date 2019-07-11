@@ -52,6 +52,13 @@ class AddMedicineForm(forms.ModelForm):
     class Meta:
         model=Medicine
         fields = ('Medicine_price','Medicine_name','Medicine_dosage','Medicine_type','total_quantity')
+        widgets={
+            'Medicine_price':forms.NumberInput(attrs={'class':'form-control','autofocus':'true'}),
+            'Medicine_name':forms.TextInput(attrs={'class':'form-control'}),
+            'Medicine_dosage':forms.NumberInput(attrs={'class':'form-control'}),
+            'Medicine_type':forms.Select(attrs={'class':'custom-select'}),
+            'total_quantity':forms.NumberInput(attrs={'class':'form-control'}),
+        }
         # exclude=['vendor_selling']
         
 class UpdateForm(forms.Form):

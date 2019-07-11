@@ -1,0 +1,30 @@
+body
+{
+    font-style: italic;
+    background:url("/static/img/sample.jpg");
+    background-size:cover;
+}
+
+.left-box
+{
+    max-width: 350px;
+    border-radius: 20px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    padding: 40px;
+    color:#fff;
+    margin-top: 100px;
+}
+.right-box
+{
+    max-width: 350px;
+    border-radius: 20px;
+    margin: auto;
+    background: rgba(172, 163, 163, 0.5);
+    box-sizing: border-box;
+    padding: 40px;
+    color:#fff;
+    margin-top: 100px;
+}
+}

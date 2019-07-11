@@ -1,8 +1,21 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Orders{% endblock page_title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/Orders.css' %}">{% endblock %}
 {% block main_content %}
 <div class="container">
-<table>
+        <table class="table table-bordered table-dark">
+                <thead>
+                        <tr>
+                          <th scope="col">Medicine Name</th>
+                          <th scope="col">Quantity</th>
+                          <th scope="col">Vendor Name</th>
+                          <th scope="col">User Type</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+    
 {% for o in order %}
     <tr>
         <form method="post">
@@ -16,8 +29,8 @@
             <input type="hidden" name="client" value="{{o.client}}">
             <input type="hidden" name="c_type" value="{{o.c_type}}">
             <input type="hidden" name="id" value="{{o.id}}">
-            <td><input type="submit" value="Accept Order" name="accept"></td>
-            <td><input type="submit" value="Reject Order" name="reject"></td>
+            <td><input  class="btn btn-success" type="submit" value="Accept Order" name="accept"></td>
+            <td><input  class=" btn btn-primary" type="submit" value="Reject Order" name="reject"></td>
         </form>
     </tr>
 {% endfor %}

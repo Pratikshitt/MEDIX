@@ -1,17 +1,34 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Inventory{% endblock page_title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">{% endblock %}
 {% block main_content %}
-<div class="container">
+<nav class="navbar navbar-light bg-light">
 <a href="/orders" class="btn btn-warning">Notifications</a>
 <a href="/add_medicine" class="btn  btn-dark">Add Medicine</a>
-<table>
+<a href="/logout" class="btn btn-danger">Logout</a>
+</nav>
+<div class="container">
+        <table class="table table-striped">
+                <thead>
+                        <tr>
+                          <th scope="col">Medicine Name</th>
+                          <th scope="col">Medicine Price</th>
+                          <th scope="col">Medicine Dosage</th>
+                          <th scope="col">Medicine Type</th>
+                          <th scope="col">Quantity</th>
+                          <th scope="col">Action(Update)</th>
+                          <th scope="col">Action(Delete)</th>
+                        </tr>
+                      </thead>
     {% for med in inv %}
     <tr>
-    <td>{{med.Medicine_name}}</td> <br>
-    <td>{{med.Medicine_price}}</td> <br>
-    <td>{{med.Medicine_dosage}}</td> <br>
-    <td>{{med.Medicine_type}}</td> <br>
-    <td>{{med.total_quantity}}</td> <br>
+    <td>{{med.Medicine_name}}</td> 
+    <td>{{med.Medicine_price}}</td> 
+    <td>{{med.Medicine_dosage}}</td> 
+    <td>{{med.Medicine_type}}</td> 
+    <td>{{med.total_quantity}}</td> 
     <td><a href="/update_medicine/{{med.id}}" class="btn btn-primary">Update</a></td>
     <td><a href="/remove_medicine/{{med.id}}" class="btn btn-danger">Delete</a> </td>  
     </tr>

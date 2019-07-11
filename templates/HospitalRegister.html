@@ -1,12 +1,20 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Hospital Register{% endblock page_title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
+
 {% block main_content %}
-<div class="container">
+
+
+
+<div class="containe" >
     <form method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     {{form}}
-    <input type="submit" value="Register">
+    <br><br>
+    <input  class= "btn btn-primary" type="submit" value="Register">
     </form>
-        {% if error %} {{error}} {%endif%}
-</div>
+     {% if error %} {{error}} {%endif%}
+ </div>
 {% endblock main_content %}

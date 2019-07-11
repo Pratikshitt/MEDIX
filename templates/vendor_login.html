@@ -1,11 +1,15 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Vendor Login{% endblock page_title %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vendor_login.css' %}">{% endblock %}
 {% block main_content %}
-<div class="container">
+<div class="containe">
     <form method="POST">
     {% csrf_token %}
-    {{form}}
-    <input type="submit" value="LOGIN">
+    {{form}} <br>
+    <input type="submit" class="btn btn-primary" value="LOGIN">
+    <a href="/vendor_register" class="btn btn-success">Register</a>
     </form>
 </div>
 {% endblock main_content %}
