@@ -56,9 +56,9 @@ class Hospital(models.Model):
 #--------------------------------------------------------------------------------------------
 class User_To_Vendor_Order(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
-    order_details=models.CharField(max_length=1000,verbose_name="Order Details")
-    vendor=models.OneToOneField(Vendor,on_delete=models.SET_NULL,null=True)
-    user=models.OneToOneField(Normal_User,on_delete=models.SET_NULL,null=True)
+    order_details=models.CharField(max_length=100,verbose_name="Order Details")
+    vendor=models.ForeignKey(Vendor,on_delete=models.SET_NULL,null=True)
+    user=models.ForeignKey(Normal_User,on_delete=models.SET_NULL,null=True)
     direction=models.BooleanField(default=True) #whether the notification is from user to vendor or opposite
     #if user sends a request then direction is true else it is false
     high_priority=models.BooleanField(default=False)
@@ -70,8 +70,8 @@ class User_To_Vendor_Order(models.Model):
 class Hospital_To_Vendor_Order(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
     order_details=models.CharField(max_length=100,)
-    vendor=models.OneToOneField(Vendor,on_delete=models.SET_NULL,null=True)
-    hospital=models.OneToOneField(Hospital,on_delete=models.SET_NULL,null=True)
+    vendor=models.ForeignKey(Vendor,on_delete=models.SET_NULL,null=True)
+    hospital=models.ForeignKey(Hospital,on_delete=models.SET_NULL,null=True)
     direction=models.BooleanField(default=True)#whether the notification is from user to vendor or opposite
     #if hospital sends a request then direction is true else it is false
     high_priority=models.BooleanField(default=True)

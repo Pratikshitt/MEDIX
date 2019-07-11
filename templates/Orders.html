@@ -1,0 +1,26 @@
+{% extends "base/basic_layout.html" %}
+{% block page_title %}Orders{% endblock page_title %}
+{% block main_content %}
+<div class="container">
+<table>
+{% for o in order %}
+    <tr>
+        <form method="post">
+            {% csrf_token %}
+            <td>{{o.med}}</td>
+            <td>{{o.quan}}</td>
+            <td>{{o.client}}</td>
+            <td>{{o.c_type}}</td>
+            <input type="hidden" name="med" value="{{o.med}}">
+            <input type="hidden" name="quan" value="{{o.quan}}">
+            <input type="hidden" name="client" value="{{o.client}}">
+            <input type="hidden" name="c_type" value="{{o.c_type}}">
+            <input type="hidden" name="id" value="{{o.id}}">
+            <td><input type="submit" value="Accept Order" name="accept"></td>
+            <td><input type="submit" value="Reject Order" name="reject"></td>
+        </form>
+    </tr>
+{% endfor %}
+</table>
+</div>
+{% endblock main_content %}

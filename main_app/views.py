@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group#To use the groups functionality of 
 from .models import Normal_User,Hospital,Vendor,Hospital_To_Vendor_Order,User_To_Vendor_Order,Medicine,Items
 from django.contrib.auth.decorators import login_required
 from .forms import SearchForm,AddMedicineForm,UpdateForm
-
+from django.core.mail import send_mail
 #-----------------------------------------------------------------------------------------------
 #Function For Logout
 #-----------------------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ def MedicineSearchView(request):
     if (request.user.groups.all())[0].id==3:
         return redirect("log_out") 
     if (request.user.groups.all())[0].id==2:
-        for h in Hospital:
+        for h in Hospital.objects.all():
             if h.auth_user==request.user:
                 if not h.is_verified:
                     return HttpResponse("Your Account Is Not Verified")
@@ -280,9 +280,106 @@ def add_to_cart(request,id,quan):
 @login_required(login_url="u_h_login")
 def view_cart(request):
     cart=Items.objects.all()
-    notif_list=[]
+    # notif_list=[]
     if request.method=="POST":
-        ord=User_To_Vendor_Order()
-            
+        if (request.user.groups.all())[0].id==2:
+            for it in cart:
+                ord=Hospital_To_Vendor_Order()
+                ord.order_details=""
+                ord.order_details+=it.medicine_name
+                ord.order_details+=" , "+str(it.quantity)+" "
+                h_user=None
+                for h in Hospital.objects.all():
+                    if h.auth_user==request.user:
+                        h_user=h
+                ord.hospital=h_user
+                ven=Vendor.objects.get(vendor_name=it.vendor_name)
+                ord.vendor=ven
+                ord.high_priority=True
+                ord.save()
+                Items.objects.all().delete()
+            return redirect('m_search')
+        else:
+            for it in cart:
+                ord=User_To_Vendor_Order()
+                ord.order_details=""
+                ord.order_details+=it.medicine_name
+                ord.order_details+=" , "+str(it.quantity)+" "
+                n_user=None
+                for use in Normal_User.objects.all():
+                    if use.auth_user==request.user:
+                        n_user=use
+                ord.user=n_user
+                ven=Vendor.objects.get(vendor_name=it.vendor_name)
+                ord.vendor=ven
+                ord.save()
+                Items.objects.all().delete()
+            return redirect('m_search')
+          
     return render(request,'cart.html',{'items':cart})
+
+#-----------------------------------------------------------------------------------------------
+#Class To wrap order information
+#-----------------------------------------------------------------------------------------------
+class order_wrapper:
+    def __init__(self,med,quan,client,c_type,id):
+        self.med=med
+        self.quan=quan
+        self.client=client
+        self.c_type=c_type
+        self.id=id
+
+#-----------------------------------------------------------------------------------------------
+#Function to send mail
+#-----------------------------------------------------------------------------------------------
+def mail_notif(email,message):
+    send_mail(
+    "MEDIX",
+    message,
+    'kumar1235813@gmail.com',
+    ['kumar1235813@gmail.com'],
+    fail_silently=False,
+)
+
+    
+#-----------------------------------------------------------------------------------------------
+#View to enable the vendor to access the orders
+#-----------------------------------------------------------------------------------------------
+@login_required(login_url="v_login")
+def orders(request):
+    order_list=[]
+    vend=None
+    for v in Vendor.objects.all():
+        if v.auth_user==request.user:
+            vend=v
+    print(vend)
+    for o in User_To_Vendor_Order.objects.all():
+        if vend.vendor_name==o.vendor.vendor_name:
+            print("HSFDHKJDFSJKSDFHJSDFH")
+            if o.user!=None:
+                    o_w=order_wrapper(med=((o.order_details).split(','))[0],quan=((o.order_details).split(','))[1],client=o.user.auth_user.username,c_type="normal user",id=o.id)
+                    order_list.append(o_w)
+    for o in Hospital_To_Vendor_Order.objects.all():
+        if vend.vendor_name==o.vendor:
+            o_w=order_wrapper(med=((o.order_details).split(','))[0],quan=((o.order_details).split(','))[1],client=o.hospital.auth_user.username,c_type="hospital",id=o.id)
+            order_list.append(o_w)
+    print(order_list)
+    if request.method=='POST':
+        u_type=request.POST.get('c_type')
+        u_name=request.POST.get('client')
+        message="Your order of "
+        em=(User.objects.get(username=u_name)).email
+        if u_type=="normal user":   
+            print(request.POST.get('id'))
+            message=(User_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+            User_To_Vendor_Order.objects.get(id=request.POST.get('id')).delete()
+        else:
+            Hospital_To_Vendor_Order.objects.get(id=request.POST.get('id')).delete()
+            message=(Hospital_To_Vendor_Order.objects.get(id=request.POST.get('id'))).order_details
+        if 'accept' in request.POST:
+            message+=" is accepted"
+        else:
+            message+=" is rejected"
+        mail_notif(email=em,message=message)
+    return render(request,'Orders.html',{'order':order_list})
     
