@@ -1,12 +1,20 @@
 {% extends "base/basic_layout.html" %}
 {% block page_title %}Inventory{% endblock page_title %}
 {% block main_content %}
+<div class="container">
+<a href="/add_medicine" class="btn  btn-dark">Add Medicine</a>
+<table>
     {% for med in inv %}
-        {{med.MedicineName}} <br>
-        {{med.Medicine_price}} <br>
-        {{med.Medicine_dosage}} <br>
-        {{med.Medicine_type}} <br>
-        {{med.total_quantity}} <br>
-        {{med.vendor_selling.vendor_name}} <br>  
+    <tr>
+    <td>{{med.Medicine_name}}</td> <br>
+    <td>{{med.Medicine_price}}</td> <br>
+    <td>{{med.Medicine_dosage}}</td> <br>
+    <td>{{med.Medicine_type}}</td> <br>
+    <td>{{med.total_quantity}}</td> <br>
+    <td><a href="/update_medicine/{{med.id}}" class="btn btn-primary">Update</a></td>
+    <td><a href="/remove_medicine/{{med.id}}" class="btn btn-danger">Delete</a> </td>  
+    </tr>
     {% endfor %}
+</table>
+</div>
 {% endblock main_content %}

@@ -56,7 +56,7 @@ class Hospital(models.Model):
 #--------------------------------------------------------------------------------------------
 class User_To_Vendor_Order(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
-    order_details=models.CharField(max_length=100,verbose_name="Order Details")
+    order_details=models.CharField(max_length=1000,verbose_name="Order Details")
     vendor=models.OneToOneField(Vendor,on_delete=models.SET_NULL,null=True)
     user=models.OneToOneField(Normal_User,on_delete=models.SET_NULL,null=True)
     direction=models.BooleanField(default=True) #whether the notification is from user to vendor or opposite

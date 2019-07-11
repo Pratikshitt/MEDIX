@@ -1,0 +1,20 @@
+{% extends "base/basic_layout.html" %}
+{% block page_title %}Cart{% endblock page_title %}
+{% block main_content %}
+<div class="container">
+    <table>
+    {% for it in items %}
+        <tr>
+            <td>{{it.vendor_name}}</td>
+            <td>{{it.medicine_name}}</td>
+            <td>{{it.quantity}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Place Order">
+    </form>
+</div>
+
+{% endblock main_content %}

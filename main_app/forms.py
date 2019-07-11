@@ -46,7 +46,7 @@ class VendorLoginForm(forms.Form):
     Password=forms.CharField(label="Password",widget=forms.PasswordInput(attrs={'class':'form-control','maxlength':'30','required':'True'}))
 
 class SearchForm(forms.Form):
-    seach_query=forms.CharField(label="Search",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True','autofocus':'True'}))
+    search_query=forms.CharField(label="Search",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True','autofocus':'True'}))
 
 class AddMedicineForm(forms.ModelForm):
     class Meta:
@@ -54,3 +54,10 @@ class AddMedicineForm(forms.ModelForm):
         fields = ('Medicine_price','Medicine_name','Medicine_dosage','Medicine_type','total_quantity')
         # exclude=['vendor_selling']
         
+class UpdateForm(forms.Form):
+    Medicine_name=forms.CharField(label="Medicine Name:",widget=forms.TextInput(attrs={'class':'form-control','maxlength':'30','required':'True','autofocus':'True','value':'{{med.Medicine_name}}'}))
+    Medicine_price=forms.FloatField(label="Medicine Price",widget=forms.NumberInput(attrs={'class':'form-control','maxlength':'30','required':'True','value':'{{med.Medicine_price}}'}))
+    Medicine_dosage=forms.IntegerField(label="Medicine Dosage",widget=forms.NumberInput(attrs={'class':'form-control','maxlength':'30','required':'True','value':'{{med.Medicine_dosage}}'}))
+    types=(('Schedule 1','Schedule 1'),('Schedule 2','Schedule 2'),('Schedule 3','Schedule 3'),('Schedule 4','Schedule 4'),('Schedule 5','Schedule 5'))
+    Medicine_type=forms.CharField(label="Medicine Type",widget=forms.Select(choices=types,attrs={'class':'form-control','maxlength':'30','required':'True','value':'{{med.Medicine_type}}'}))
+    total_quantity=forms.IntegerField(label="Total Quantity",widget=forms.NumberInput(attrs={'class':'form-control','maxlength':'30','required':'True','value':'{{med.total_quantity}}'}))
